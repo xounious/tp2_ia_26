@@ -9,7 +9,7 @@ model = pickle.load(open('insurance.pickle',"rb"));
 cols = ['age', 'sex', 'bmi', 'children', 'smoker', 'region']
 
 @app.route('/')
-def home(arg1,arg2):
+def home():
     return render_template("input.html")
 
 @app.route('/predict',methods=['POST'])
