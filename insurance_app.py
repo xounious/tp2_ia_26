@@ -23,3 +23,9 @@ def predict():
 
 if __name__ == '__main__':
     app.run()
+
+#lancer l'application (une des trois possibilités)
+# flask --app insurance_app run
+# python insurance_app.py
+# avec
+# gunicorn insurance_app:app
