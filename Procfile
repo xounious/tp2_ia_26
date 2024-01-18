@@ -1,1 +1,1 @@
-web: python insurance_app.py
+web: gunicorn insurance_app:home
