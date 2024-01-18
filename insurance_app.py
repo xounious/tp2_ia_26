@@ -22,4 +22,4 @@ def predict():
     return render_template('input.html',resultat=f"Le cout annuel de l'assurance est de {result:.2f}US$")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
