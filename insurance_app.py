@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import numpy as np
 import pandas as pd 
 import pickle
@@ -20,6 +20,16 @@ def predict():
     prediction=model.predict(data_unseen)
     result=prediction[0]
     return render_template('input.html',resultat=f"Le cout annuel de l'assurance est de {result:.2f}US$")
+
+@app.route('/predict_api',methods=['POST'])
+def predict_api():
+    features = request.get_json(force=True)
+    final = np.array(features)
+    data_unseen = pd.DataFrame([final], columns = cols)
+    prediction=model.predict(data_unseen)
+    result=prediction[0]
+    return jsonify(result)
+
 
 if __name__ == '__main__':
     app.run()
