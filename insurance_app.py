@@ -23,7 +23,7 @@ def predict():
 
 @app.route('/predict_api',methods=['POST'])
 def predict_api():
-    features = request.get_json(force=True)
+    features = [x for x in request.args.values()]
     final = np.array(features)
     data_unseen = pd.DataFrame([final], columns = cols)
     prediction=model.predict(data_unseen)
