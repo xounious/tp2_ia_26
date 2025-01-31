@@ -1,50 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Predict Insurance Bill</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Predict CO2 Consumption</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css" />
+    </head>
 
-<body>
-    <main class="container-fluid">
-        <div class="bg-light p-5 rounded form-group col-md-7 col-lg-8">
-            <h1>Prédiction de coût annuel d'assurance</h1>
-            <form action="{{url_for('predict')}}" method="POST">
-                <label for="age" class="form-label">Age : </label>
-                <input class="form-control" type="text" name="age" placeholder="Age" required="req   uired" /><br>
-                <label for="age" class="form-label">Sexe : </label>
-                <select class="form-control" name="sex" placeholder="Sex" required="required">
-                    <option value="0">Femme</option>
-                    <option value="1">Homme</option>
-                </select><br>        
-                <label for="bmi" class="form-label">IMC (Indice de Masse Corporelle): </label>
-                <input class="form-control" type="text" name="bmi" placeholder="BMI" required="required" /><br>
-                <label for="children" class="form-label">Nombre d'enfants : </label>
-                <input class="form-control" type="text" name="children" placeholder="Nombre d'enfants" required="required" /><br>
-                <label for="smoker" class="form-label">Fumeur : </label>
-                <select class="form-control" name="smoker" placeholder="Fumeur ?" required="required" >
-                    <option value="0">Oui</option>
-                    <option value="1">Non</option>
-                </select><br>
-                <label for="region" class="form-label">Région : </label>
-                <select class="form-control" name="region" placeholder="Region" required="required">
-                    <option value="0">Sud ouest</option>
-                    <option value="1">Sud Est</option>
-                    <option value="2">Nord Ouest</option>
-                    <option value="3">Nord Est</option>
-                </select>
-                <br>
+    <body>
+        <main class="container-fluid">
+            <div class="bg-light p-5 rounded form-group col-md-7 col-lg-8">
+                <h1 class="text-center mb-4">Prédiction de rejet de CO2 de la voiture</h1>
+                <form action="{{url_for('predict')}}" method="POST">
+                    {% for options in selectOptions %}
+                    <div class="mb-3">
+                        <label for="{{options}}" class="form-label">{{options}}</label>
+                        {% if selectOptions[options][0] is number %}
+                        <input type="number" class="form-control" name="{{options}}" id="{{options}}" value="{{ selectOptions[options][0] }}" required />
+                        {% else %}
+                        <select class="form-select" name="{{options}}" id="{{options}}">
+                            {% set i=0 %} {% for option in selectOptions[options] %}
+                            <option value="{{ i }}">{{option}}</option>
+                            {% set i=i+1 %} {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %} {% endfor %} {% if selectOptions %}
+                    <button type="submit" class="btn btn-primary btn-block btn-large">Prédiction</button>
+                    {% endif %}
+                </form>
 
-                <button type="submit" class="btn btn-primary btn-block btn-large">Prédiction</button>
-            </form>
-
-            <br>
-            <b>{{resultat}}</b>
-            <br>
-        </div>
-    </main>
-
-</body>
+                <br />
+                {% if resultat %}
+                <p>Émissions de CO2 estimées : <b>{{resultat}}</b></p>
+                <button class="btn btn-primary btn-block btn-large" onclick="window.location.assign('/')">Revenir à la sélection</button>
+                {% endif %}
+                <br />
+            </div>
+        </main>
+    </body>
 </html>

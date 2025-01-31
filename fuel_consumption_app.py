@@ -5,12 +5,16 @@ import pickle
 
 app = Flask(__name__)
 
-model = pickle.load(open('insurance.pickle',"rb"));
-cols = ['age', 'sex', 'bmi', 'children', 'smoker', 'region']
+model = pickle.load(open('co2emmisions.pickle',"rb"))
+csv = pd.read_csv('FuelConsumption.csv')
+cols = [col for col in csv.columns if col != 'CO2EMISSIONS']
 
 @app.route('/')
 def home():
-    return render_template("input.html")
+    selectOptions = {}
+    for col in cols:
+        selectOptions[col] = csv[col].unique()
+    return render_template("input.html", selectOptions=selectOptions)
 
 @app.route('/predict',methods=['POST'])
 def predict():
@@ -18,8 +22,9 @@ def predict():
     final = np.array(features)
     data_unseen = pd.DataFrame([final], columns = cols)
     prediction=model.predict(data_unseen)
+    print(prediction)
     result=prediction[0]
-    return render_template('input.html',resultat=f"Le cout annuel de l'assurance est de {result:.2f}US$")
+    return render_template('input.html',resultat=result)
 
 @app.route('/predict_api',methods=['POST'])
 def predict_api():

@@ -1,1 +1,1 @@
-web: gunicorn insurance_app:app
+web: gunicorn fuel_consumption_app:app
